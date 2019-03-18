@@ -9,14 +9,14 @@
 
 ## Lecture Outline
 
-## NOTES
-<!--Place any pre-lecture notes here . Examples include
-1. Class Expectations
-2. Syllabus 
-3. Career Coaching/DSA 
-4. misc..-->
+## Review
+1. Syllabus
+2. Grade Break down
+3. Coding Challenges and Expectations
+4. Due Dates
 
-### Welcome to 401: Advanced Software Development in ASP.NET MVC Core
+
+## Welcome to 401: Advanced Software Development in ASP.NET MVC Core
 Welcome to Class! Please be sure read through the syllabus and get comfortable with both Visual Studio and Canvas.
 Introduce yourself to your classmates, and come to class ready to learn!
 
