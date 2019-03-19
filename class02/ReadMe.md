@@ -8,6 +8,14 @@
 4. Students will setup readme documentation for each assignment given a specific format.
 
 ## Lecture Outline
+1. Code Challenge Review
+	- Code Challenge 4	
+2. Summary Comments and Requirements
+	- Examples
+3. Readmes
+	- Templates/Expectations
+4. Unit Testing
+	- TDD
 
 ### Unit Testing
 - Test Driven Development
