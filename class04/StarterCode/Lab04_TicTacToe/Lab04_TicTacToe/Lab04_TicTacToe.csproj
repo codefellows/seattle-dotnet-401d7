@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Classes\Game.cs" />
+  
   </ItemGroup>
 
 </Project>
