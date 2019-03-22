@@ -7,6 +7,7 @@ namespace Lab04_TicTacToe
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            PlayGame();
         }
 
         static void PlayGame()
