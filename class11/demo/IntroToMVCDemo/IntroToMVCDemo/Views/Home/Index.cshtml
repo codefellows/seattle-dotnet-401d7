@@ -1,0 +1,27 @@
+﻿@{ 
+    string name = "Amanda";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Class 11 Demo</title>
+    <link rel="stylesheet" href="~/style/StyleSheet.css" />
+</head>
+<body>
+<h1> hello! @name</h1>
+
+<form method="post">
+    <label for="FirstName">First Name</label>
+    <input maxlength="10" name="FirstName" />
+
+    <label for="LastName">Last Name</label>
+    <input maxlength="15" name="LastName" />
+
+    <label for="Age">Age</label>
+    <input type="number" name="Age" />
+
+    <button type="submit">SUBMIT!</button>
+</form>
+
+</body>
+</html>

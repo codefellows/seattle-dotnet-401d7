@@ -1,0 +1,17 @@
+﻿@model IEnumerable<IntroToMVCDemo.Models.Student>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Student Created</title>
+</head>
+<body>
+    Student Created Page
+    @foreach (var item in Model)
+    {
+        <p>@item.FirstName @item.LastName is @item.Age years old!</p>
+    }
+    
+    <a asp-controller="Home" asp-action="Index">Add New Student</a>
+
+</body>
+</html>
