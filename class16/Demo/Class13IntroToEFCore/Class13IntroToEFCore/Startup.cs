@@ -1,6 +1,4 @@
 ﻿using Class13IntroToEFCore.Data;
-using Class13IntroToEFCore.Models.Interfaces;
-using Class13IntroToEFCore.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +22,6 @@ namespace Class13IntroToEFCore
 
             services.AddDbContext<StudentEnrollmentDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddScoped<ICourseManager, CourseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
