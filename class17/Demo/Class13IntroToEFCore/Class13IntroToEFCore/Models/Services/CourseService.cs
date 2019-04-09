@@ -1,8 +1,8 @@
 ﻿using Class13IntroToEFCore.Data;
 using Class13IntroToEFCore.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Class13IntroToEFCore.Models.Services
@@ -35,19 +35,29 @@ namespace Class13IntroToEFCore.Models.Services
             }
 
             return course;
-                
-        }
 
+        }
 
         public bool DeleteCourse(int id)
         {
-            throw new NotImplementedException();
+            var course = _context.Courses.Where(x => x.ID == id);
+            if (course != null)
+            {
+                _context.Remove(course);
+                _context.SaveChanges();
+            }
+            return true;
         }
 
 
-        public void UpdateCourse(int id)
+        public void UpdateCourse(int id, Course course)
         {
-            throw new NotImplementedException();
+            if (course.ID == id)
+            {
+                _context.Courses.Update(course);
+                _context.SaveChanges();
+            }
+
         }
 
         public Transcript GetTranscript(int id)
@@ -59,7 +69,12 @@ namespace Class13IntroToEFCore.Models.Services
 
         public List<Transcript> GetAllTranscripts()
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+        public bool CourseExists(int id)
+        {
+            return _context.Courses.Any(e => e.ID == id);
         }
     }
 }

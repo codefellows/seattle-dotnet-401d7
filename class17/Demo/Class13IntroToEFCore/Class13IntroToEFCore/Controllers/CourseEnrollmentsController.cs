@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Class13IntroToEFCore.Data;
+using Class13IntroToEFCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Class13IntroToEFCore.Data;
-using Class13IntroToEFCore.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Class13IntroToEFCore.Controllers
 {

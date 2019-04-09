@@ -26,6 +26,8 @@ namespace Class13IntroToEFCore
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICourseManager, CourseService>();
+            services.AddScoped<IStudentManager, StudentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

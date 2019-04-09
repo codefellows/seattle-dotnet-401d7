@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Class13IntroToEFCore.Models;
+using Class13IntroToEFCore.Models.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Class13IntroToEFCore.Data;
-using Class13IntroToEFCore.Models;
 
 namespace Class13IntroToEFCore.Controllers
 {
     public class StudentsController : Controller
     {
-        private readonly StudentEnrollmentDbContext _context;
+        private readonly IStudentManager _context;
 
-        public StudentsController(StudentEnrollmentDbContext context)
+        public StudentsController(IStudentManager context)
         {
             _context = context;
         }
@@ -22,19 +19,18 @@ namespace Class13IntroToEFCore.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Students.ToListAsync());
+            return View(await _context.GetStudents());
         }
 
         // GET: Students/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var student = await _context.GetStudent(id);
             if (student == null)
             {
                 return NotFound();
@@ -58,22 +54,21 @@ namespace Class13IntroToEFCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
+                await _context.CreateStudent(student);
                 return RedirectToAction(nameof(Index));
             }
             return View(student);
         }
 
         // GET: Students/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
+            var student = await _context.GetStudent(id);
             if (student == null)
             {
                 return NotFound();
@@ -97,8 +92,7 @@ namespace Class13IntroToEFCore.Controllers
             {
                 try
                 {
-                    _context.Students.Update(student);
-                    await _context.SaveChangesAsync();
+                    _context.UpdateStudent(id, student);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +111,14 @@ namespace Class13IntroToEFCore.Controllers
         }
 
         // GET: Students/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var student = await _context.GetStudent(id);
             if (student == null)
             {
                 return NotFound();
@@ -134,20 +127,9 @@ namespace Class13IntroToEFCore.Controllers
             return View(student);
         }
 
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var student = await _context.Students.FindAsync(id);
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool StudentExists(int id)
         {
-            return _context.Students.Any(e => e.ID == id);
+            return _context.StudentExists(id);
         }
     }
 }

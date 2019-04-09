@@ -5,11 +5,15 @@ namespace Class13IntroToEFCore.Models.Interfaces
 {
     public interface ICourseManager
     {
-        // Create a course
+        /// <summary>
+        /// Create and adds a new course into the database
+        /// </summary>
+        /// <param name="course">The new course to be added/saved</param>
+        /// <returns>a task of completion</returns>
         Task CreateCourse(Course course);
 
         // Update a Course
-        void UpdateCourse(int id);
+        void UpdateCourse(int id, Course course);
 
         // Delete a course
         bool DeleteCourse(int id);
@@ -23,6 +27,8 @@ namespace Class13IntroToEFCore.Models.Interfaces
         Transcript GetTranscript(int id);
 
         List<Transcript> GetAllTranscripts();
+
+        bool CourseExists(int id);
 
 
     }
