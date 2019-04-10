@@ -17,9 +17,12 @@ namespace Class13IntroToEFCore.Models.Interfaces
 
         Task<List<CourseEnrollments>> GetEnrollments(int id);
 
-        List<Transcript> GetTranscripts(int studentID);
+        Task<List<Transcript>> GetTranscripts(int studentID);
+        Task<Transcript> GetTranscript(int id);
+        Task UpdateTranscipt(Transcript transcript);
+        Task DeleteTranscript(int id);
 
-        void AddTranscript(Transcript transcript);
+        Task AddTranscript(Transcript transcript);
 
         bool StudentExists(int id);
 

@@ -1,54 +1,30 @@
-﻿using Class13IntroToEFCore.Data;
-using Class13IntroToEFCore.Models;
+﻿using Class13IntroToEFCore.Models;
+using Class13IntroToEFCore.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Class13IntroToEFCore.Controllers
 {
     public class TranscriptsController : Controller
     {
-        private readonly StudentEnrollmentDbContext _context;
+        private readonly IStudentManager _students;
+        private readonly ICourseManager _courses;
 
-        public TranscriptsController(StudentEnrollmentDbContext context)
+
+        public TranscriptsController(IStudentManager students, ICourseManager courses)
         {
-            _context = context;
-        }
+            _students = students;
+            _courses = courses;
 
-        // GET: Transcripts
-        public async Task<IActionResult> Index()
-        {
-            var studentEnrollmentDbContext = _context.Transcripts.Include(t => t.Course).Include(t => t.Student);
-            return View(await studentEnrollmentDbContext.ToListAsync());
-        }
-
-        // GET: Transcripts/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var transcript = await _context.Transcripts
-                .Include(t => t.Course)
-                .Include(t => t.Student)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (transcript == null)
-            {
-                return NotFound();
-            }
-
-            return View(transcript);
         }
 
         // GET: Transcripts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CourseID"] = new SelectList(_context.Courses, "ID", "ID");
-            ViewData["StudentID"] = new SelectList(_context.Students, "ID", "ID");
+
+            ViewData["CourseID"] = new SelectList(await _courses.GetCourses(), "ID", "Name");
+            ViewData["StudentID"] = new SelectList(await _students.GetStudents(), "ID", "FullName");
             return View();
         }
 
@@ -61,30 +37,56 @@ namespace Class13IntroToEFCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(transcript);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (transcript.ID <= 0)
+                {
+                    await _students.AddTranscript(transcript);
+                }
+                else
+                {
+                    var trnscrpt = await _students.GetTranscript(transcript.ID);
+                }
+
+
+                return RedirectToAction("Index", "Students");
             }
-            ViewData["CourseID"] = new SelectList(_context.Courses, "ID", "ID", transcript.CourseID);
-            ViewData["StudentID"] = new SelectList(_context.Students, "ID", "ID", transcript.StudentID);
+            ViewData["CourseID"] = new SelectList(await _courses.GetCourses(), "ID", "Name", transcript.CourseID);
+            ViewData["StudentID"] = new SelectList(await _students.GetStudents(), "ID", "FullName", transcript.StudentID);
             return View(transcript);
         }
 
-        // GET: Transcripts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+        // GET: CourseEnrollments/Details/5
+        public async Task<IActionResult> Details(int studentId, int courseID)
         {
-            if (id == null)
+            if (studentId <= 0 || courseID <= 0)
             {
                 return NotFound();
             }
 
-            var transcript = await _context.Transcripts.FindAsync(id);
+            var transcripts = await _students.GetTranscripts(studentId);
+            if (transcripts == null)
+            {
+                return NotFound();
+            }
+
+            return View(transcripts);
+        }
+
+        // GET: Transcripts/Edit/5
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+
+            var transcript = await _students.GetTranscript(id);
             if (transcript == null)
             {
                 return NotFound();
             }
-            ViewData["CourseID"] = new SelectList(_context.Courses, "ID", "ID", transcript.CourseID);
-            ViewData["StudentID"] = new SelectList(_context.Students, "ID", "ID", transcript.StudentID);
+            ViewData["CourseID"] = new SelectList(await _courses.GetCourses(), "ID", "Name", transcript.CourseID);
+            ViewData["StudentID"] = new SelectList(await _students.GetStudents(), "ID", "FullName", transcript.StudentID);
             return View(transcript);
         }
 
@@ -102,41 +104,26 @@ namespace Class13IntroToEFCore.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(transcript);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TranscriptExists(transcript.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                await _students.UpdateTranscipt(transcript);
+
+
+                return RedirectToAction("Index", "Students");
             }
-            ViewData["CourseID"] = new SelectList(_context.Courses, "ID", "ID", transcript.CourseID);
-            ViewData["StudentID"] = new SelectList(_context.Students, "ID", "ID", transcript.StudentID);
+            ViewData["CourseID"] = new SelectList(await _courses.GetCourses(), "ID", "Name", transcript.CourseID);
+            ViewData["StudentID"] = new SelectList(await _students.GetStudents(), "ID", "FullName", transcript.StudentID);
             return View(transcript);
         }
 
         // GET: Transcripts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            if (id <= 0)
             {
                 return NotFound();
             }
 
-            var transcript = await _context.Transcripts
-                .Include(t => t.Course)
-                .Include(t => t.Student)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var transcript = await _students.GetTranscripts(id);
             if (transcript == null)
             {
                 return NotFound();
@@ -145,20 +132,14 @@ namespace Class13IntroToEFCore.Controllers
             return View(transcript);
         }
 
+
         // POST: Transcripts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var transcript = await _context.Transcripts.FindAsync(id);
-            _context.Transcripts.Remove(transcript);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TranscriptExists(int id)
-        {
-            return _context.Transcripts.Any(e => e.ID == id);
+            await _students.DeleteTranscript(id);
+            return RedirectToAction("Details", "Students", id);
         }
     }
 }

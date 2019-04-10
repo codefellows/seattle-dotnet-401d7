@@ -10,27 +10,46 @@
     <h4>Student</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Age)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Age)
         </dd>
     </dl>
+
+    <h2>Transcripts</h2>
+    @foreach (var item in Model.Transcripts)
+    {
+        <p>@item.Course.Name || @item.Grade</p>
+    }
+
+    <h2> Enrollments </h2>
+    <ul>
+        @foreach (var item in Model.Enrollments)
+        {
+            <li>@item.Course.Name</li>
+        }
+    </ul>
+
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="GetNumber" asp-route-id="@Model.ID">Average</a> |
+
+    <a asp-action="Create" asp-controller="Transcripts">Add Transcript</a> |
     <a asp-action="Index">Back to List</a>
 </div>

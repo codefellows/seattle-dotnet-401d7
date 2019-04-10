@@ -1,5 +1,6 @@
 ﻿using Class13IntroToEFCore.Models;
 using Class13IntroToEFCore.Models.Interfaces;
+using Class13IntroToEFCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -130,6 +131,20 @@ namespace Class13IntroToEFCore.Controllers
         private bool StudentExists(int id)
         {
             return _context.StudentExists(id);
+        }
+
+
+        public async Task<IActionResult> GetNumber(int id)
+        {
+            var student = await _context.GetStudent(id);
+            int number = student.Transcripts.Count();
+
+            NumberViewModel nvm = new NumberViewModel();
+            nvm.Number = number;
+            nvm.Student = student;
+
+            return View("Average", nvm);
+
         }
     }
 }

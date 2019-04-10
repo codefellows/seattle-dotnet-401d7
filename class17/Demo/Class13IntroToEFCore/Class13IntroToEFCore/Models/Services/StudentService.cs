@@ -34,7 +34,12 @@ namespace Class13IntroToEFCore.Models.Services
 
         public async Task<Student> GetStudent(int id)
         {
-            var student = await _context.Students.FindAsync(id);
+            Student student = await _context.Students
+                                            .Include(t => t.Transcripts)
+                                            .ThenInclude(x => x.Course)
+                                            .Include(t => t.Enrollments)
+                                            .FirstOrDefaultAsync(m => m.ID == id);
+
             return student;
 
         }
@@ -58,16 +63,36 @@ namespace Class13IntroToEFCore.Models.Services
             return _context.Students.Any(e => e.ID == id);
         }
 
-        public List<Transcript> GetTranscripts(int id)
+        public async Task<List<Transcript>> GetTranscripts(int id)
         {
-            return _context.Transcripts
-                           .Where(tran => tran.StudentID == id).ToList();
+            return await _context.Transcripts
+                           .Where(tran => tran.StudentID == id).ToListAsync();
         }
 
-        public void AddTranscript(Transcript transcript)
+        public async Task<Transcript> GetTranscript(int id)
+        {
+            return await _context.Transcripts.FirstOrDefaultAsync(x => x.ID == id);
+        }
+
+
+        public async Task DeleteTranscript(int id)
+        {
+            var trans = await GetTranscript(id);
+
+            _context.Transcripts.Remove(trans);
+        }
+
+
+        public async Task AddTranscript(Transcript transcript)
         {
             _context.Add(transcript);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTranscipt(Transcript transcript)
+        {
+            _context.Update(transcript);
+            await _context.SaveChangesAsync();
         }
     }
 }
