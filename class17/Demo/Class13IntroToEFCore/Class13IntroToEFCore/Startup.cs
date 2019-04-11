@@ -12,21 +12,36 @@ namespace Class13IntroToEFCore
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment Environment { get; }
 
-        public Startup(IConfiguration configuration)
+
+        public Startup(IHostingEnvironment environment)
         {
-            Configuration = configuration;
+            Environment = environment;
+            var builder = new ConfigurationBuilder().AddEnvironmentVariables();
+            builder.AddUserSecrets<Startup>();
+            Configuration = builder.Build();
+
+
+            //Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
-            services.AddDbContext<StudentEnrollmentDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //var connectionString = Environment.IsDevelopment()
+            //    ? Configuration.GetConnectionString("DefaultConnection")
+            //    : Configuration.GetConnectionString("ProductionConnection");
 
+
+            services.AddDbContext<StudentEnrollmentDbContext>(options =>
+            options.UseSqlServer(Configuration["DefaultConnection"]));
+
+
+            // Mappings
             services.AddScoped<ICourseManager, CourseService>();
-            services.AddScoped<IStudentManager, StudentService>();
+            services.AddTransient<IStudentManager, StudentService>();
 
         }
 
