@@ -28,9 +28,10 @@ namespace MusicDemoAPI.Models.Service
 
         public async Task<Song> GetByID(int id)
         {
-            return await _context.Songs
+            Song song = await _context.Songs
                            .Include(s => s.Artist)
                            .FirstOrDefaultAsync(x => x.ID == id);
+            return song;
         }
 
         public async Task AddSong(Song song)

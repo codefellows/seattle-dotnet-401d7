@@ -1,7 +1,7 @@
 ﻿using Class13IntroToEFCore.Models;
 using Class13IntroToEFCore.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,17 +10,22 @@ namespace Class13IntroToEFCore.Controllers
     public class CoursesController : Controller
     {
         private readonly ICourseManager _courses;
+        private readonly IConfiguration _configuration;
 
-        public CoursesController(ICourseManager courses)
+        public CoursesController(ICourseManager courses, IConfiguration configuration)
         {
             _courses = courses;
+
+            _configuration = configuration;
         }
 
         // GET: Courses
         public async Task<IActionResult> Index()
         {
             List<Course> myCourses = await _courses.GetCourses();
+            var cat = _configuration["APIKey"];
             return View(myCourses);
+
         }
 
         // GET: Courses/Details/5
