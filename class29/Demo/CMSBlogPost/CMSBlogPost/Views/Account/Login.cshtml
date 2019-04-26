@@ -1,0 +1,23 @@
+﻿@model CMSBlogPost.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password" class="text-danger"></span>
+
+    <button type="submit">LOGIN!</button>
+</form>
