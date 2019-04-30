@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CMSBlogPost.Models.Post>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Default</title>
+</head>
+<body>
+    <section style="border: 1px solid black">
+        Hello! This is my View Component.
+        @foreach (var item in Model)
+        {
+            <article>
+                <h3>@item.Title</h3>
+                <p>@item.Description</p>
+
+            </article>
+
+        }
+    </section>
+</body>
+</html>
