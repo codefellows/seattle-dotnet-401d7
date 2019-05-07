@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CMSBlogPost.Models
+@inject SignInManager<ApplicationUser> SignInManager
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <span> WELCOME @User.Claims.First(c => c.Type == "FullName").Value!</span>
+}
+else
+{
+    <span> WELCOME STRANGER!</span>
+    // Give them a login/Register link
+}
+
+
+@await Component.InvokeAsync("TopPosts", 3);
+
+Hello!!
+
+    <form method="post">
+<button type="submit">PAY ALL THE MONEY!</button>
+</form>
