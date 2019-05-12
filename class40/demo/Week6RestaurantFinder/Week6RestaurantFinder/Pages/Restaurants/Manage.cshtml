@@ -1,0 +1,27 @@
+﻿@page "{id?}"
+@model Week6RestaurantFinder.Pages.Restaurants.ManageModel
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<h1>Manage</h1>
+
+<form method="post" enctype="multipart/form-data">
+
+    <label asp-for="Image"></label>
+    <input asp-for="Image" type="file" />
+
+    <label asp-for="Restaurant.Name"></label>
+    <input asp-for="Restaurant.Name" />
+
+    <label asp-for="Restaurant.StarRating"></label>
+    <input asp-for="Restaurant.StarRating" />
+
+
+    <label asp-for="Restaurant.Description"></label>
+<textarea rows="5" asp-for="Restaurant.Description"></textarea>
+
+
+    <button type="submit">SAVE</button>
+    <button type="submit" asp-page-handler="Delete">DELETE</button>
+</form>

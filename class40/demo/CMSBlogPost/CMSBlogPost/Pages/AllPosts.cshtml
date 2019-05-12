@@ -1,0 +1,30 @@
+﻿@page
+@using CMSBlogPost.Models.Interfaces
+
+@inject IPosts Posts
+
+@{
+    var posts = Posts.GetPosts();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+
+    @foreach (var item in posts)
+    {
+        <h3>@item.Title</h3>
+        <p>@item.Description</p>
+
+        <a asp-page="/Posts/Details" asp-route-id="@item.ID">View Details</a>
+
+        <hr />
+
+    }
+</body>
+</html>

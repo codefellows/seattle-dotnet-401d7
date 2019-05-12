@@ -1,0 +1,19 @@
+﻿@page
+@using Week6RestaurantFinder.Models.Interfaces
+
+@inject IRestaurant RestaurantManager
+
+@{ 
+    var restaurants = await RestaurantManager.GetRestaurants();
+
+}
+
+@foreach (var item in restaurants)
+{
+    <h3>@item.Name</h3>
+    <p>@item.StarRating</p>
+
+    <a asp-page="/Restaurants/Index" asp-route-id="@item.ID">@item.Name</a>
+}
+
+<h3><a asp-page="/Restaurants/Manage">ADD NEW RESTAURANT</a></h3>

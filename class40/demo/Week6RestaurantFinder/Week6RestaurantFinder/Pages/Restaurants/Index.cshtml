@@ -1,0 +1,18 @@
+﻿@page "{id}"
+@model Week6RestaurantFinder.Pages.Restaurants.IndexModel
+@{
+}
+
+<img src="@Model.Restaurant.URL" />
+
+<div>
+    <label asp-for="Restaurant.Name"></label>
+    <label asp-for="Restaurant.Name">@Model.Restaurant.Name</label>
+</div>
+
+<div>
+    <label asp-for="Restaurant.StarRating"></label>
+    <label asp-for="Restaurant.StarRating">@Model.Restaurant.StarRating</label>
+</div>
+
+<a asp-page="/Restaurants/Manage" asp-route-id="@Model.Restaurant.ID">EDIT</a>

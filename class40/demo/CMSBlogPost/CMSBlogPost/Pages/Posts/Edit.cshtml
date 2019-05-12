@@ -1,0 +1,30 @@
+﻿@page "{id}"
+@model CMSBlogPost.Pages.Posts.EditModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <form method="post">
+
+        <label asp-for="Post.Title"></label>
+        <input asp-for="Post.Title" type="text" />
+
+        <label asp-for="Post.Description"></label>
+        <textarea rows="5" asp-for="Post.Description"></textarea>
+
+        <button type="submit">SAVE</button>
+        <button type="submit" asp-page-handler="Delete">DELETE</button>
+
+    </form>
+       
+
+</body>
+</html>

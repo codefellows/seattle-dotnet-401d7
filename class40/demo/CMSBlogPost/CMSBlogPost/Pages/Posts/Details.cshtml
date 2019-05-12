@@ -1,0 +1,32 @@
+﻿@page "{id}"
+@model CMSBlogPost.Pages.Posts.DetailsModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <label asp-for="Post.Title">Title:</label>
+        <label asp-for="Post.Title">@Model.Post.Title</label>
+
+    </div>
+
+    <div>
+        <label asp-for="Post.Description">Description: </label>
+        <label asp-for="Post.Description">@Model.Post.Description</label>
+
+    </div>
+
+    <a asp-page="/Posts/Edit" asp-route-id="@Model.Post.ID">EDIT</a>
+
+
+   
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿@page
+@model CMSBlogPost.Pages.Posts.CreatePostModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreatePost</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+
+        <label asp-for="Image">Image Upload:</label>
+        <input asp-for="Image" type="file" />
+
+        <label asp-for="Post.Title"></label>
+        <input asp-for="Post.Title" type="text" />
+
+        <label asp-for="Post.Description"></label>
+        <textarea rows="5" asp-for="Post.Description"></textarea>
+
+        <button type="submit">Create Post</button>
+
+    </form>
+</body>
+</html>
